@@ -105,6 +105,21 @@ void drawFace(RenderWindow &window, char cube[6][3][3]	, int face )
 {
 	int hoffset = getHOffset(face); // gets the horizontal offset of face 
 	int voffset = getVOffset(face); // gets the vertical    offset of face 
+	//get text 
+	Font font;
+	if (!font.loadFromFile("garamond.ttf")) {
+		cout << "Error loading Font" << endl;
+		exit(0);
+	}
+	Text text;
+	text.setString(to_string(face)); 
+	text.setFont(font); 
+	text.setCharacterSize(SQUARESIZE/2); 
+	text.setOutlineColor(Color::Yellow); 
+	text.setOutlineThickness(.5); 
+	text.setOrigin(SQUARESIZE/6, SQUARESIZE/3); 
+	text.setFillColor(Color::Black);
+	text.setStyle(Text::Bold); 
 	for (int i = 0; i < 3; i++)
 	{
 		for (int j = 0; j < 3; j++)
@@ -112,11 +127,16 @@ void drawFace(RenderWindow &window, char cube[6][3][3]	, int face )
 			RectangleShape square; 
 			square.setOrigin(SQUARESIZE / 2, SQUARESIZE / 2);
 			square.setOutlineColor(Color::Black);
-			square.setOutlineThickness(1.5); 
+			square.setOutlineThickness(4); 
 			square.setSize(Vector2f(SQUARESIZE, SQUARESIZE));
 			square.setPosition(Vector2f(int(WIDTH / 2.5) - SQUARESIZE + hoffset + (j * SQUARESIZE), HEIGHT / 2 - SQUARESIZE + (i * SQUARESIZE) + voffset));
 			square.setFillColor(getColor(cube[face][i][j]));
 			window.draw(square); 
+			if (i == 1 && j == 1)
+			{
+				text.setPosition(Vector2f(int(WIDTH / 2.5) - SQUARESIZE + hoffset + (j * SQUARESIZE), HEIGHT / 2 - SQUARESIZE + (i * SQUARESIZE) + voffset)); 
+				window.draw(text); 
+			}
 		}
 	}
 }
@@ -128,8 +148,7 @@ void makeUpper(char cube[6][3][3], int face)
 		{
 			cube[face][i][j] = toupper(cube[face][i][j]);
 		}
-
-	}
+			}
 }
 void printFace(char cube[6][3][3], int face) // enter the index for the face 
 {
